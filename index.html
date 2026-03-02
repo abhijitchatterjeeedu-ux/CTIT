@@ -3,180 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CT IT | Unfair Digital Dominance</title>
+    <title>CT IT | Digital Performance & Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #0a0a0a;
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
             color: #ffffff;
+            margin: 0;
             overflow-x: hidden;
         }
 
-        /* 3D Background Element */
-        .cube-container {
+        /* 3D Canvas Background */
+        #canvas-container {
             position: absolute;
-            top: 20%;
-            right: 10%;
-            width: 200px;
-            height: 200px;
-            perspective: 1000px;
-            z-index: -1;
-            opacity: 0.4;
-        }
-        
-        .cube {
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotate 15s infinite linear;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
-        .face {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border: 2px solid #ff3b3b;
-            background: rgba(255, 59, 59, 0.1);
-            box-shadow: 0 0 20px #ff3b3b;
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.2);
+            border-color: rgba(79, 172, 254, 0.5);
         }
-        
-        .front  { transform: translateZ(100px); }
-        .back   { transform: rotateY(180deg) translateZ(100px); }
-        .right  { transform: rotateY(90deg) translateZ(100px); }
-        .left   { transform: rotateY(-90deg) translateZ(100px); }
-        .top    { transform: rotateX(90deg) translateZ(100px); }
-        .bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-        @keyframes rotate {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
-        }
-
-        /* 3D Card Styling */
-        .glass-card {
-            background: rgba(25, 25, 25, 0.8);
-            border: 1px solid #333;
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-        }
-
-        .glass-card h3, .glass-card p, .glass-card a {
-            transform: translateZ(30px); /* Pushes text outward for 3D effect */
-        }
-
-        .text-neon { color: #ff3b3b; text-shadow: 0 0 10px rgba(255, 59, 59, 0.5); }
-        .bg-neon { background-color: #ff3b3b; }
-        .bg-neon:hover { background-color: #d82b2b; box-shadow: 0 0 20px #ff3b3b; }
     </style>
 </head>
-<body class="antialiased selection:bg-red-500 selection:text-white">
+<body class="antialiased">
 
-    <header class="relative min-h-screen flex items-center justify-center px-6 pt-20 pb-12">
-        <div class="cube-container">
-            <div class="cube">
-                <div class="face front"></div><div class="face back"></div>
-                <div class="face right"></div><div class="face left"></div>
-                <div class="face top"></div><div class="face bottom"></div>
-            </div>
-        </div>
+    <div id="canvas-container"></div>
 
-        <div class="max-w-5xl mx-auto text-center z-10">
-            <h2 class="text-neon font-bold tracking-widest uppercase mb-4 text-sm md:text-base">CT IT // Digital Warfare</h2>
-            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight uppercase">
-                Stop Wasting Money On <span class="text-gray-500 line-through">Garbage</span> Marketing. <br>
-                We Build <span class="text-neon">Revenue Machines.</span>
+    <nav class="fixed w-full z-50 glass-panel border-b-0 py-4 px-8 flex justify-between items-center">
+        <div class="text-2xl font-bold tracking-tighter">CT<span class="text-blue-400">IT</span></div>
+        <a href="#contact" class="px-6 py-2 bg-blue-500 hover:bg-blue-400 text-white text-sm font-semibold rounded-full transition-colors">Let's Talk</a>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-4xl mx-auto text-center z-10 glass-panel p-10 md:p-16 rounded-3xl">
+            <h2 class="text-blue-400 font-semibold tracking-widest uppercase mb-4 text-sm">Data-Driven Agency</h2>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                Precision Marketing & <br> <span class="gradient-text">Immersive Web Design</span>
             </h1>
-            <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto">
-                We don't do "cute" vanity metrics. We engineer ruthless digital assets, high-converting websites, and Meta Ad campaigns that hunt down your ideal customers and force them to buy.
+            <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto font-light">
+                We engineer scalable digital ecosystems. From high-converting Meta Ads to premium web platforms, we build the infrastructure your brand needs to dominate online.
             </p>
-            <a href="#contact" class="bg-neon text-white font-bold text-lg py-4 px-10 rounded-full transition-all duration-300 inline-block uppercase tracking-wide">
-                Claim Your Free Strategy Session
-            </a>
+            <div class="flex gap-4 justify-center">
+                <a href="#portfolio" class="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors">View Work</a>
+                <a href="#metrics" class="px-8 py-3 border border-gray-500 text-white font-semibold rounded-full hover:border-blue-400 transition-colors">Our Results</a>
+            </div>
         </div>
     </header>
 
-    <section class="py-20 bg-black px-6 border-t border-b border-gray-800">
+    <section id="metrics" class="py-24 px-6 relative z-10 bg-[#0a0a0c]">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black uppercase mb-4">The Proof Is In The <span class="text-neon">Math</span></h2>
-                <p class="text-gray-400 text-lg">We don't guess. We deploy capital efficiently. Here is what we've done across 10 different industries.</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Meta Ads Performance Report</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Aggregate performance metrics managed across 10 distinct industry verticals.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="glass-card p-10 rounded-2xl" data-tilt data-tilt-max="10" data-tilt-speed="400">
-                    <h3 class="text-5xl font-black text-neon mb-2">₹67.99 L</h3>
-                    <p class="text-gray-300 font-bold uppercase tracking-wider">Total Ad Spend Managed</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel p-8 rounded-2xl text-center border-t border-blue-500/30">
+                    <p class="text-gray-400 text-sm uppercase tracking-wider mb-2">Total Ad Spend</p>
+                    <h3 class="text-4xl font-bold gradient-text">₹67.99 L</h3>
                 </div>
-                <div class="glass-card p-10 rounded-2xl" data-tilt data-tilt-max="10" data-tilt-speed="400">
-                    <h3 class="text-5xl font-black text-neon mb-2">40,923</h3>
-                    <p class="text-gray-300 font-bold uppercase tracking-wider">Qualified Leads Generated</p>
+                <div class="glass-panel p-8 rounded-2xl text-center border-t border-blue-500/30">
+                    <p class="text-gray-400 text-sm uppercase tracking-wider mb-2">Total Impressions</p>
+                    <h3 class="text-4xl font-bold gradient-text">18.87 Cr</h3>
                 </div>
-                <div class="glass-card p-10 rounded-2xl" data-tilt data-tilt-max="10" data-tilt-speed="400">
-                    <h3 class="text-5xl font-black text-neon mb-2">18.87 Cr</h3>
-                    <p class="text-gray-300 font-bold uppercase tracking-wider">Total Impressions</p>
+                <div class="glass-panel p-8 rounded-2xl text-center border-t border-blue-500/30">
+                    <p class="text-gray-400 text-sm uppercase tracking-wider mb-2">Total Leads Generated</p>
+                    <h3 class="text-4xl font-bold gradient-text">40,923</h3>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 px-6 bg-[#0f0f0f]">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black uppercase mb-4">Our <span class="text-neon">Arsenal</span></h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">A website shouldn't be an online brochure. It should be a 24/7 digital salesperson. Look at the assets we've deployed for our clients.</p>
+    <section id="portfolio" class="py-24 px-6 relative z-10 bg-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16 md:flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Digital Platforms</h2>
+                    <p class="text-gray-400 max-w-xl">We don't just build websites; we build digital assets engineered for user engagement and lead generation.</p>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="glass-card rounded-2xl overflow-hidden p-6" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
-                    <div class="h-48 bg-gray-800 rounded-xl mb-6 flex items-center justify-center border border-gray-700">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest">Real Estate</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="https://www.phoenix-realty.in/" target="_blank" class="block glass-panel rounded-2xl overflow-hidden hover-lift group">
+                    <div class="h-56 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-6 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <h3 class="text-2xl font-bold text-white z-10">Phoenix Realty</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-2">Phoenix Realty</h3>
-                    <p class="text-gray-400 mb-6 text-sm">A high-conversion engine built to capture high-ticket real estate leads with zero friction.</p>
-                    <a href="https://www.phoenix-realty.in/" target="_blank" class="text-neon font-bold uppercase tracking-wider text-sm hover:text-white transition-colors">Launch Asset &rarr;</a>
-                </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Real Estate</span>
+                        <p class="mt-3 text-gray-300 text-sm">A seamless, modern property platform designed to showcase premium real estate and capture buyer inquiries efficiently.</p>
+                        <div class="mt-4 text-sm font-semibold text-white flex items-center gap-2 group-hover:text-blue-400 transition-colors">
+                            Visit Site <span class="text-xl">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
 
-                <div class="glass-card rounded-2xl overflow-hidden p-6" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
-                    <div class="h-48 bg-gray-800 rounded-xl mb-6 flex items-center justify-center border border-gray-700">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest">Non-Profit</span>
+                <a href="https://shailendrasarthifoundation.com/" target="_blank" class="block glass-panel rounded-2xl overflow-hidden hover-lift group">
+                    <div class="h-56 bg-gradient-to-br from-blue-900 to-gray-900 flex items-center justify-center p-6 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <h3 class="text-2xl font-bold text-white z-10 text-center">Shailendra Sarthi Foundation</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-2">Shailendra Sarthi</h3>
-                    <p class="text-gray-400 mb-6 text-sm">An emotionally resonant, trust-building platform designed to drive immediate donor action.</p>
-                    <a href="https://shailendrasarthifoundation.com/" target="_blank" class="text-neon font-bold uppercase tracking-wider text-sm hover:text-white transition-colors">Launch Asset &rarr;</a>
-                </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Non-Profit</span>
+                        <p class="mt-3 text-gray-300 text-sm">An emotionally engaging, trust-oriented digital presence built to highlight initiatives and drive organizational support.</p>
+                        <div class="mt-4 text-sm font-semibold text-white flex items-center gap-2 group-hover:text-blue-400 transition-colors">
+                            Visit Site <span class="text-xl">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
 
-                <div class="glass-card rounded-2xl overflow-hidden p-6" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
-                    <div class="h-48 bg-gray-800 rounded-xl mb-6 flex items-center justify-center border border-gray-700">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest">Hospitality</span>
+                <a href="https://www.hotelthegrandchandiram.com/" target="_blank" class="block glass-panel rounded-2xl overflow-hidden hover-lift group">
+                    <div class="h-56 bg-gradient-to-br from-gray-900 to-black border-b border-gray-800 flex items-center justify-center p-6 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <h3 class="text-2xl font-bold text-white z-10 text-center">Hotel The Grand Chandiram</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-2">The Grand Chandiram</h3>
-                    <p class="text-gray-400 mb-6 text-sm">A premium digital storefront engineered to maximize direct bookings and outrank aggregators.</p>
-                    <a href="https://www.hotelthegrandchandiram.com/" target="_blank" class="text-neon font-bold uppercase tracking-wider text-sm hover:text-white transition-colors">Launch Asset &rarr;</a>
-                </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Hospitality</span>
+                        <p class="mt-3 text-gray-300 text-sm">An elegant, conversion-focused hospitality website designed to increase direct bookings and showcase amenities.</p>
+                        <div class="mt-4 text-sm font-semibold text-white flex items-center gap-2 group-hover:text-blue-400 transition-colors">
+                            Visit Site <span class="text-xl">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-24 px-6 text-center">
-        <div class="max-w-3xl mx-auto glass-card p-12 rounded-3xl border border-red-900" data-tilt data-tilt-max="5">
-            <h2 class="text-4xl md:text-5xl font-black uppercase mb-6">Stop Bleeding Cash.</h2>
-            <p class="text-xl text-gray-300 mb-8">If you're tired of marketing agencies that deliver excuses instead of ROI, it's time to upgrade. Let's map out a strategy that actually makes you money.</p>
-            <a href="mailto:hello@ctit.com" class="bg-neon text-white font-bold text-xl py-5 px-12 rounded-full transition-all duration-300 inline-block uppercase tracking-wide hover:scale-105">
-                Contact CT IT Now
+    <footer id="contact" class="py-20 px-6 border-t border-gray-900 bg-[#050505] relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to scale your digital presence?</h2>
+            <p class="text-gray-400 mb-8">Partner with CT IT to leverage data-backed advertising and high-performance web development.</p>
+            <a href="mailto:contact@ctit.com" class="px-10 py-4 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-full transition-colors inline-block">
+                Get In Touch
             </a>
         </div>
-    </section>
-
-    <footer class="py-6 text-center text-gray-600 text-sm border-t border-gray-900 bg-black">
-        <p>&copy; 2026 CT IT. All Rights Reserved. Dominating the digital space.</p>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script>
+        // Set up the scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create a 3D High-Tech Torus Knot
+        const geometry = new THREE.TorusKnotGeometry(10, 2.5, 200, 32);
+        
+        // Create a wireframe material for a tech/IT look
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x4facfe, 
+            wireframe: true,
+            transparent: true,
+            opacity: 0.15
+        });
+        
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        // Position camera
+        camera.position.z = 30;
+
+        // Mouse interaction variables
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        // Event listener for mouse movement
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smoothly ease the rotation towards the mouse position
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            torusKnot.rotation.y += 0.005 + (targetX - torusKnot.rotation.y) * 0.05;
+            torusKnot.rotation.x += 0.005 + (targetY - torusKnot.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>
-
